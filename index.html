@@ -1,195 +1,63 @@
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>AR Building</title>
-    <!-- 🚨 REQUIRED: Web Components polyfill to support Edge and Firefox < 63 -->
- <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.1.3/webcomponents-loader.js"></script>
+<!-- import aframe and then ar.js with image tracking / location based features -->
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
-    <!-- 💁 OPTIONAL: Intersection Observer polyfill for better performance in Safari and IE11 -->
-   <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script> 
-
-    <!-- 💁 OPTIONAL: Resize Observer polyfill improves resize behavior in non-Chrome browsers -->
-    <script src="https://unpkg.com/resize-observer-polyfill@1.5.0/dist/ResizeObserver.js"></script>
-    
-    <!-- 💁 OPTIONAL: The :focus-visible polyfill removes the focus ring for some input types -->
-    <script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js" defer></script>
-
-  </head> 
-<body>
- <model-viewer src="assets/Chair.glb" poster="assets/Chair.png" shadow-intensity="1" ar ar-modes="webxr scene-viewer quick-look" camera-controls alt="A 3D model carousel">
-  
-  <button slot="ar-button" id="ar-button">
-    View in your space
-  </button>
-
-  <div id="ar-prompt">
-    <img src="assets/hand.png">
-  </div>
-
-  <button id="ar-failure">
-    AR is not tracking!
-  </button>
-
-  <div class="slider">
-    <div class="slides">
-      <button class="slide selected" onclick="switchSrc(this, 'Chair')" style="background-image: url('assets/Chair.png');">
-
-      </button><button class="slide" onclick="switchSrc(this, 'Mixer')" style="background-image: url('assets/Mixer.png');">
-
-      </button><button class="slide" onclick="switchSrc(this, 'GeoPlanter')" style="background-image: url('assets/GeoPlanter.png');">
-      
-      </button><button class="slide" onclick="switchSrc(this, 'ToyTrain')" style="background-image: url('assets/ToyTrain.png');">
-      
-      </button><button class="slide" onclick="switchSrc(this, 'Canoe')" style="background-image: url('assets/Canoe.png');">    
-    </button></div>
-  </div>
-</model-viewer>
-
-<script type="module">
-  const modelViewer = document.querySelector("model-viewer");
-
-  window.switchSrc = (element, name) => {
-    const base = "assets/" + name;
-    modelViewer.src = base + '.glb';
-    modelViewer.poster = base + '.png';
-    const slides = document.querySelectorAll(".slide");
-    slides.forEach((element) => {element.classList.remove("selected");});
-    element.classList.add("selected");
-  };
-
-  document.querySelector(".slider").addEventListener('beforexrselect', (ev) => {
-    // Keep slider interactions from affecting the XR scene.
-    ev.preventDefault();
-  });
-</script>
-
+<!-- style for the loader -->
 <style>
-  /* This keeps child nodes hidden while the element loads */
-  :not(:defined) > * {
-    display: none;
-  }
-
-  model-viewer {
-    background-color: #eee;
-    overflow-x: hidden;
-    --poster-color: #eee;
-  }
-
-  #ar-button {
-    background-image: url(../../assets/ic_view_in_ar_new_googblue_48dp.png);
-    background-repeat: no-repeat;
-    background-size: 20px 20px;
-    background-position: 12px 50%;
-    background-color: #fff;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    bottom: 132px;
-    padding: 0px 16px 0px 40px;
-    font-family: Roboto Regular, Helvetica Neue, sans-serif;
-    font-size: 14px;
-    color:#4285f4;
-    height: 36px;
-    line-height: 36px;
-    border-radius: 18px;
-    border: 1px solid #DADCE0;
-  }
-
-  #ar-button:active {
-    background-color: #E8EAED;
-  }
-
-  #ar-button:focus {
-    outline: none;
-  }
-
-  #ar-button:focus-visible {
-    outline: 1px solid #4285f4;
-  }
-
-  @keyframes circle {
-    from { transform: translateX(-50%) rotate(0deg) translateX(50px) rotate(0deg); }
-    to   { transform: translateX(-50%) rotate(360deg) translateX(50px) rotate(-360deg); }
-  }
-
-  @keyframes elongate {
-    from { transform: translateX(100px); }
-    to   { transform: translateX(-100px); }
-  }
-
-  model-viewer > #ar-prompt {
-    position: absolute;
-    left: 50%;
-    bottom: 175px;
-    animation: elongate 2s infinite ease-in-out alternate;
-    display: none;
-  }
-
-  model-viewer[ar-status="session-started"] > #ar-prompt {
-    display: block;
-  }
-
-  model-viewer > #ar-prompt > img {
-    animation: circle 4s linear infinite;
-  }
-
-  model-viewer > #ar-failure {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 175px;
-    display: none;
-  }
-
-  model-viewer[ar-tracking="not-tracking"] > #ar-failure {
-    display: block;
-  }
-
-  .slider {
+  .arjs-loader {
+    height: 100%;
     width: 100%;
-    text-align: center;
-    overflow: hidden;
     position: absolute;
-    bottom: 16px;
-  }
-
-  .slides {
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
+    justify-content: center;
+    align-items: center;
   }
 
-  .slide {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    width: 100px;
-    height: 100px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #fff;
-    margin-right: 10px;
-    border-radius: 10px;
-    border: none;
-    display: flex;
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
   }
-
-  .slide.selected {
-    border: 2px solid #4285f4;
-  }
-
-  .slide:focus {
-    outline: none;
-  }
-
-  .slide:focus-visible {
-    outline: 1px solid #4285f4;
-  }
-
 </style>
+
+<body style="margin : 0px; overflow: hidden;">
+  <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
+  <div class="arjs-loader">
+    <div>Loading, please wait...</div>
+  </div>
+
+  <!-- a-frame scene -->
+  <a-scene
+    vr-mode-ui="enabled: false;"
+    renderer="logarithmicDepthBuffer: true;"
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+  >
+    <!-- a-nft is the anchor that defines an Image Tracking entity -->
+    <!-- on 'url' use the path to the Image Descriptors created before. -->
+    <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
+    <a-nft
+      type="nft"
+      url="<path-to-your-image-descriptors>"
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance=".01"
+      smoothThreshold="5"
+    >
+        <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
+        <a-entity
+            gltf-model="<path-to-your-model>"
+            scale="5 5 5"
+            position="50 150 0"
+        >
+        </a-entity>
+    </a-nft>
+    <!-- static camera that moves according to the device movemenents -->
+    <a-entity camera></a-entity>
+  </a-scene>
 </body>
-</html>
