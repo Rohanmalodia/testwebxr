@@ -29,16 +29,12 @@
  
   <div id="card">
     <!-- All you need to put beautiful, interactive 3D content on your site: -->
-    <model-viewer src="assets/Bedroom.glb"
+    <model-viewer camera-controls 
+                  src="assets/Bedroom.glb"
                   id="transform" 
                   ios-src="https://raw.githack.com/Rohanmalodia/testwebxr/main/assets/Bedroom.usdz"
                   poster="https://raw.githack.com/Rohanmalodia/testwebxr/main/assets/Bedroom.png"
                   alt="A realistic 3D model of bedroom"
-                  skybox-image="assets/spruit_sunrise_1k_HDR.hdr"
-                  scale="${5} ${5} ${5}"
-                  shadow-intensity="1.5"
-                  camera-controls
-                  interaction="interaction"
                   auto-rotate ar>
      
     </model-viewer>
