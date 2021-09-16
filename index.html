@@ -26,42 +26,11 @@
 
   </head> 
 <body>
-  <style>
-  #lazy-load-poster {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-image: url("../../assets/poster-damagedhelmet.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  #button-load {
-    background-image: url("../../assets/ic_get_app_white_24dp.svg");
-    background-repeat: no-repeat;
-    background-size: 24px 24px;
-    background-position: 6% 50%;
-    background-color: #000;
-    color: white;
-    cursor: pointer;
-    border-radius: 6px;
-    display: inline-block;
-    padding: 10px 18px 9px 40px;
-    font-weight: 500;
-    box-shadow: 0 0 8px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.25);
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    z-index: 100;
-  }
-</style>
+ 
   <div id="card">
     <!-- All you need to put beautiful, interactive 3D content on your site: -->
     <model-viewer src="assets/Bedroom.glb"
-                  id="lazy-load" 
+                  id="transform" 
                   ios-src="https://raw.githack.com/Rohanmalodia/testwebxr/main/assets/Bedroom.usdz"
                   poster="https://raw.githack.com/Rohanmalodia/Webxr/main/assets/Bedroom.png"
                   alt="A realistic 3D model of bedroom"
@@ -71,8 +40,7 @@
                   camera-controls
                   interaction="interaction"
                   auto-rotate ar>
-      <div id="lazy-load-poster" slot="poster"></div>
-  <div id="button-load" slot="poster">Load 3D Model</div>
+     
     </model-viewer>
     <section class="attribution">
       <span>
@@ -92,21 +60,7 @@
   <script type="module"
       src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
   </script>
-  <script>
-    const modelViewerTransform = document.querySelector("model-viewer#transform");  
-    const [material] = modelViewerTransform.model.materials;
-    material.pbrMetallicRoughness.setRoughnessFactor(0.6);
-    const resize= document.querySelector('#resize');
-
-     const resizeModel = () => {
-          modelViewerTransform.scale = `${10} ${10} ${10}`;
-        };
-    
-     resize.addEventListener('click', () => {
-          resizeModel();
-          });
-  
-  </script>
+ 
 
   <!-- Loads <model-viewer> for old browsers like IE11: -->
   <script nomodule
